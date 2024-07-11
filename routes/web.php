@@ -6,6 +6,7 @@ use App\Http\Controllers\AppController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\ConfigurationController;
+use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\AdminController;
 
 
@@ -59,6 +60,10 @@ Route::middleware('auth')->group(function(){
         Route::post('/create',[AdminController::class,'store'])->name('administrateurs.store');
         Route::get('/delete/{user}',[AdminController::class,'delete'])->name('administrateurs.delete');
 
+    });
+
+    Route::prefix('paiement')->group(function(){
+        Route::get('/',[PaiementController::class, 'index'])->name('payments');
     });
 
 });
