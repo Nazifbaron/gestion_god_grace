@@ -19,8 +19,10 @@
 
     <div class="box">
         <h1>Connexion</h1>
-
-        
+    <!--{{Hash::make('azerty')}}-->
+        @if (Session::get('success_msg') )
+            <b style="font-size:10px;color:green">{{Session::get('success_msg')}}</b>
+        @endif
         @if (Session::get('error_msg') )
             <b style="font-size:10px;color:red">{{Session::get('error_msg')}}</b>
         @endif

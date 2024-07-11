@@ -63,4 +63,14 @@ class EmployerController extends Controller
 
         }
     }
+
+    public function delete( Employer $employer){
+        try{
+            $employer->delete();
+
+            return redirect()->route('employer.index')->with('success_message','Employer supprimer avec success');
+        }catch(exception $e){
+            dd( $e);
+        }
+    }
 }
