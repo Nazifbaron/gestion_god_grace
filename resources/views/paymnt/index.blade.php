@@ -24,7 +24,7 @@
 							    <div class="col-auto">	
                                     
                                 @if ($isPaymentDay)
-                                <a class="btn app-btn-secondary" href="{{route('employer.create')}}">
+                                <a class="btn app-btn-secondary" href="{{route('payment.init')}}">
 																		<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download me-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 										<path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
 										<path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
@@ -41,6 +41,9 @@
 
 				@if (Session::get('success_message'))
 					<div class="alert alert-success">{{Session::get('success_message')}}</div>
+				@endif
+				@if (Session::get('error_message'))
+					<div class="alert alert-danger">{{Session::get('error_message')}}</div>
 				@endif
                 @if (!$isPaymentDay)
 					<div class="alert alert-danger">Vous ne pouvez éffectuer de payement qu'à la date de paiement</div>
@@ -59,9 +62,10 @@
 												<th class="cell">Employer</th>
 												<th class="cell">Montant Payé</th>
 												<th class="cell">Date de Transaction</th>
-                                                <th class="cell">Statut</th>
 												<th class="cell">Mois</th>
                                                 <th class="cell">Année</th>
+                                                <th class="cell">Statut</th>
+												
                                                 
 												<th class="cell">Action</th>
 
@@ -73,16 +77,18 @@
                                         <tr>
 											<td class="cell">{{$paymnt->id}}</td>
 											<td class="cell">{{$paymnt->reference}}</td>
-											<td class="cell">{{$paymnt->employer->name}}</td>
+											<td class="cell">{{$paymnt->employer->nom}}  {{$paymnt->employer->prenom}}</td>
 											<td class="cell">{{$paymnt->amount}}</td>
-											<td class="cell">{{$paymnt->launch_date}}</td>
-											<td class="cell">{{$paymnt->done_time}}</td>
-                                            <td class="cell">{{$paymnt->status}}</td>
-                                            <td class="cell">{{$paymnt->month}}</td>
+											<td class="cell">{{date('d-m-y',strtotime($paymnt->launch_date))}}
+												 </td>
+												 <td class="cell">{{$paymnt->month}}</td>
                                             <td class="cell">{{$paymnt->year}}</td>
-											<td class="cell"><a class="btn-sm app-btn-secondary" href="{{route('employer.edit',$employer->id)}}">Edit</a>
-											<td class="cell"><a class="btn-sm app-btn-secondary" href="{{route('employer.delete',$employer->id)}}">Supprimer</a>
+											<td class="cell"><button  class="btn btn-success btn-sm">{{$paymnt->status}}</button></td>
 
+
+                                            
+                                            
+	
 										</tr>
 		
                                         @empty

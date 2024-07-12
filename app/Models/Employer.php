@@ -12,4 +12,14 @@ class Employer extends Model
     public function departement() {
         return $this->belongsTo(Departement::class);
     }
+    /**
+     * 
+     * @return \Illuminate\Database\Eloquent\Relation\HasMany
+     */
+
+     public function payments(){
+        return $this->hasMany(Paiement::class);
+     }
+
+    
 }

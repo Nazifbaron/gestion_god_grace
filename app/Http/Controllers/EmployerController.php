@@ -42,6 +42,10 @@ class EmployerController extends Controller
             $employer->montant_journalier = $request->montant_journalier;
 
             $employer->save();
+
+            return redirect()->route('employer.index')->with('success_message','Employer ajouter avec success');
+
+
         }catch(exception $e){
 
         }
