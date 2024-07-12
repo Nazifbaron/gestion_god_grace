@@ -29,12 +29,12 @@ class PaymentRequest extends FormRequest
             'status' => 'required',
             'month' => 'required',
             'year' => 'required',
-        
         ];
     }
 
-    public function messages(){
-        return[
+    public function messages()
+    {
+        return [
             'reference.required' => 'Le champs reference est requis',
             'employer_id.required' => 'Le champ nom est requis',
             'amount.required' => 'Le champ amount est requis',
@@ -42,7 +42,7 @@ class PaymentRequest extends FormRequest
             'status.required' => 'Le champ status est requis',
             'month.unique' => 'Le mois est déjà pris',
             'year.required' => 'L\'année est requis',
-
-         ];
+        ];
     }
 }
+

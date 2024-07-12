@@ -35,7 +35,7 @@ class PaiementController extends Controller
         $paymnts = Paiement::latest()->orderBy('id', 'desc')->paginate(10);
         return view('paymnt.index', compact('paymnts', 'isPaymentDay'));
     }
-
+    
     public function initPayment()
     {
         $monthMapping = [
@@ -76,33 +76,31 @@ class PaiementController extends Controller
         return redirect()->back()->with('success_message', 'Paiement des employers effectué pour le mois ' . $currentMonthInfrench);
     }
 
-  
     public function paymentCallback(PaymentRequest $request)
-{
-    // Récupérer les informations de la transaction depuis la requête
-    $transactionId = $request->input('transaction_id');
-    $transactionStatus = $request->input('status');
+    {
+        // Récupérer les informations de la transaction depuis la requête
+        $transactionId = $request->input('transaction_id');
+        $transactionStatus = $request->input('status');
 
-    // Rechercher le paiement dans la base de données en utilisant l'ID de la transaction
-    $paiement = Paiement::where('reference', $transactionId)->first();
+        // Rechercher le paiement dans la base de données en utilisant l'ID de la transaction
+        $paiement = Paiement::where('reference', $transactionId)->first();
 
-    if ($paiement) {
-        // Mettre à jour le statut du paiement en fonction du statut retourné par FedaPay
-        if ($transactionStatus === 'approved' || $transactionStatus === 'completed') {
-            $paiement->status = 'SUCCESS';
-            $paiement->done_time = now();
+        if ($paiement) {
+            // Mettre à jour le statut du paiement en fonction du statut retourné par FedaPay
+            if ($transactionStatus === 'approved' || $transactionStatus === 'completed') {
+                $paiement->status = 'SUCCESS';
+                $paiement->done_time = now();
+            } else {
+                $paiement->status = 'FAILED';
+            }
+            
+            // Sauvegarder les changements dans la base de données
+            $paiement->save();
+            
+            return response()->json(['status' => 'success']);
         } else {
-            $paiement->status = 'FAILED';
+            // Si le paiement n'a pas été trouvé, retourner une erreur
+            return response()->json(['status' => 'error', 'message' => 'Transaction not found'], 404);
         }
-        
-        // Sauvegarder les changements dans la base de données
-        $paiement->save();
-        
-        return response()->json(['status' => 'success']);
-    } else {
-        // Si le paiement n'a pas été trouvé, retourner une erreur
-        return response()->json(['status' => 'error', 'message' => 'Transaction not found'], 404);
     }
-}
-
 }
